@@ -18,7 +18,7 @@ dependencies:
   supercharged: ^1.10.0
   auto_route: ^0.6.9
   animations: ^1.1.2
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -27,3 +27,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: Circular-Std
+      fonts:
+        - asset: assets/fonts/CircularStd-Black.ttf
+        - asset: assets/fonts/CircularStd-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/CircularStd-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/CircularStd-Book.ttf
+          weight: 300
