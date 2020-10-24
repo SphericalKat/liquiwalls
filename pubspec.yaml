@@ -18,6 +18,7 @@ dependencies:
   supercharged: ^1.10.0
   auto_route: ^0.6.9
   animations: ^1.1.2
+  sliding_up_panel: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -27,6 +28,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/
 
   fonts:
     - family: Circular-Std
