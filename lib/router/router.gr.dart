@@ -9,12 +9,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/homepage.dart';
+import '../pages/apply_page.dart';
+import '../pages/home_page.dart';
 
 class Routes {
   static const String homePage = '/';
+  static const String applyPage = '/apply';
   static const all = <String>{
     homePage,
+    applyPage,
   };
 }
 
@@ -23,6 +26,7 @@ class CustomRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.homePage, page: HomePage),
+    RouteDef(Routes.applyPage, page: ApplyPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -33,5 +37,28 @@ class CustomRouter extends RouterBase {
         settings: data,
       );
     },
+    ApplyPage: (data) {
+      final args = data.getArgs<ApplyPageArguments>(
+        orElse: () => ApplyPageArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ApplyPage(
+          key: args.key,
+          url: args.url,
+        ),
+        settings: data,
+      );
+    },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// ApplyPage arguments holder class
+class ApplyPageArguments {
+  final Key key;
+  final String url;
+  ApplyPageArguments({this.key, this.url});
 }

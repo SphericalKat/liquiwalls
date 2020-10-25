@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           children: [
             Card(
+              color: Colors.white,
+              elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
               ),
