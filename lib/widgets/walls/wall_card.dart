@@ -12,21 +12,26 @@ class WallCard extends StatelessWidget {
     var width = MediaQuery.of(context).size.width / 4;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      child: InkWell(
-        onTap: () {
-          ExtendedNavigator.of(context)
-              .push(Routes.applyPage, arguments: ApplyPageArguments(url: url));
-        },
-        child: Card(
-          elevation: 8,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: SizedBox(
-              height: width * (18 / 9),
-              width: width,
-              child: FittedBox(
-                child: Image.asset(url),
-                fit: BoxFit.cover,
+      child: Hero(
+        tag: url,
+        child: Material(
+          child: InkWell(
+            onTap: () {
+              ExtendedNavigator.of(context)
+                  .push(Routes.applyPage, arguments: ApplyPageArguments(url: url));
+            },
+            child: Card(
+              elevation: 8,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  height: width * (18 / 9),
+                  width: width,
+                  child: FittedBox(
+                    child: Image.asset(url),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
@@ -37,10 +42,5 @@ class WallCard extends StatelessWidget {
 }
 
 var items = [
-  WallCard(url: "assets/images/flowing_skies.jpg"),
-  WallCard(url: "assets/images/flowing_skies.jpg"),
-  WallCard(url: "assets/images/flowing_skies.jpg"),
-  WallCard(url: "assets/images/flowing_skies.jpg"),
-  WallCard(url: "assets/images/flowing_skies.jpg"),
   WallCard(url: "assets/images/flowing_skies.jpg"),
 ];

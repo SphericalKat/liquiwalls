@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             ),
             WallRow(title: "Popular now", children: items),
             SizedBox(height: 32),
-            WallRow(title: "Categories", children: items),
+            // WallRow(title: "Categories", children: items),
           ],
         ),
       ),
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           backgroundColor: Colors.white.withOpacity(0.7),
-          selectedItemColor: Colors.greenAccent,
+          selectedItemColor: Colors.pink,
           unselectedItemColor: Colors.black87,
           elevation: 0,
           onTap: (idx) {
