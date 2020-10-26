@@ -287,7 +287,7 @@ packages:
     source: hosted
     version: "0.5.0"
   flutter_cache_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
@@ -679,6 +679,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.3"
+  wallpaper_manager:
+    dependency: "direct main"
+    description:
+      name: wallpaper_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.10"
   watcher:
     dependency: transitive
     description:

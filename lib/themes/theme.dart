@@ -20,7 +20,7 @@ final InputDecorationTheme inputTheme = InputDecorationTheme(
 );
 
 final ThemeData darkTheme = ThemeData(
-  accentColor: electricBlue,
+  accentColor: Colors.pink,
   primaryColor: deepBlue,
   popupMenuTheme: PopupMenuThemeData(
     shape: RoundedRectangleBorder(
@@ -63,7 +63,7 @@ final ThemeData darkTheme = ThemeData(
 );
 
 final ThemeData lightTheme = ThemeData(
-    accentColor: electricBlue,
+    accentColor: Colors.pink,
     toggleableActiveColor: electricBlue,
     primaryColor: Colors.white,
     popupMenuTheme: PopupMenuThemeData(

@@ -21,10 +21,11 @@ class WallRow extends StatelessWidget {
         ),
         SizedBox(
           height: (MediaQuery.of(context).size.width / 4) * (16 / 9),
-          child: ListView(
+          child: ListView.builder(
+            itemCount: children.length,
             padding: EdgeInsets.only(left: 10),
-            children: children,
             scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => children[index],
           ),
         ),
       ],
