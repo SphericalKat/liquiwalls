@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:liqui_walls/controllers/bindings.dart';
 import 'package:liqui_walls/router/router.gr.dart';
 import 'package:liqui_walls/themes/theme.dart';
 
@@ -19,6 +20,7 @@ class WallsApp extends StatelessWidget {
         future: _initialization,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            InitBindings().dependencies();
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'LiquiWalls',

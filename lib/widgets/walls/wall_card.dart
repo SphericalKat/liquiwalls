@@ -1,11 +1,13 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:liqui_walls/router/router.gr.dart';
 
 class WallCard extends StatelessWidget {
   final String url;
+  final String category;
 
-  const WallCard({Key key, this.url}) : super(key: key);
+  const WallCard({Key key, this.url, this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +15,14 @@ class WallCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       child: Hero(
-        tag: url,
+        tag: url + category,
         child: Material(
           child: InkWell(
             onTap: () {
-              ExtendedNavigator.of(context)
-                  .push(Routes.applyPage, arguments: ApplyPageArguments(url: url));
+              ExtendedNavigator.of(context).push(
+                Routes.applyPage,
+                arguments: ApplyPageArguments(url: url, category: category),
+              );
             },
             child: Card(
               elevation: 8,
@@ -27,10 +31,7 @@ class WallCard extends StatelessWidget {
                 child: SizedBox(
                   height: width * (18 / 9),
                   width: width,
-                  child: FittedBox(
-                    child: Image.asset(url),
-                    fit: BoxFit.cover,
-                  ),
+                  child: CachedNetworkImage(imageUrl: url, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -40,7 +41,3 @@ class WallCard extends StatelessWidget {
     );
   }
 }
-
-var items = [
-  WallCard(url: "assets/images/flowing_skies.jpg"),
-];

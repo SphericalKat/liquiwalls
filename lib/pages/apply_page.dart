@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ApplyPage extends StatelessWidget {
   final String url;
+  final String id;
+  final String category;
 
-  const ApplyPage({Key key, this.url}) : super(key: key);
+  const ApplyPage({Key key, this.url, this.id, this.category})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +42,13 @@ class ApplyPage extends StatelessWidget {
         ),
       ),
       body: Hero(
-        tag: url,
+        tag: url+category,
         child: Stack(
           children: [
             Container(
               height: MediaQuery.of(context).size.height,
               color: Colors.red,
-              child: FittedBox(
-                child: Image.asset(url),
-                fit: BoxFit.cover,
-              ),
+              child: CachedNetworkImage(imageUrl: url, fit: BoxFit.cover),
             ),
             Align(
               alignment: Alignment.bottomCenter,

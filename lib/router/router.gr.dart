@@ -45,6 +45,7 @@ class CustomRouter extends RouterBase {
         builder: (context) => ApplyPage(
           key: args.key,
           url: args.url,
+          category: args.category,
         ),
         settings: data,
       );
@@ -60,5 +61,6 @@ class CustomRouter extends RouterBase {
 class ApplyPageArguments {
   final Key key;
   final String url;
-  ApplyPageArguments({this.key, this.url});
+  final String category;
+  ApplyPageArguments({this.key, this.url, this.category});
 }

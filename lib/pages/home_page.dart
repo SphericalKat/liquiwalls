@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:liqui_walls/controllers/walls.dart';
 import 'package:liqui_walls/widgets/walls/wall_card.dart';
 import 'package:liqui_walls/widgets/walls/wall_row.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -61,7 +63,43 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
               ),
             ),
-            WallRow(title: "Popular now", children: items),
+            // Obx(() => WallRow(
+            //     title: "Popular now",
+            //     children: WallsController.to.walls.value == null
+            //         ? []
+            //         : WallsController.to.walls.value.docs
+            //             .map((data) => WallCard(url: data.get("url"), id: data.get("id")))
+            //             .toList())),
+            Obx(() {
+              if (WallsController.to.categories.value != null &&
+                  WallsController.to.walls.value != null) {
+                return Column(
+                  children: WallsController.to.categories.value.docs
+                      .map(
+                        (category) => WallRow(
+                          title: category.get("name"),
+                          children: WallsController.to.walls.value.docs
+                              .where(
+                                (wall) => wall
+                                    .get("category_ids")
+                                    .contains(category.id),
+                              )
+                              .map(
+                                (e) => WallCard(
+                                  url: e.get("url"),
+                                  category: category.get("name"),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      )
+                      .toList(),
+                );
+              } else {
+                return SizedBox();
+              }
+              return null;
+            }),
             SizedBox(height: 32),
             // WallRow(title: "Categories", children: items),
           ],
