@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           fit: BoxFit.cover,
           child: Image.asset("assets/images/flowing_skies.jpg"),
         ),
-        panel: Column(
+        panelBuilder: (sc) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -63,38 +63,35 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
               ),
             ),
-            // Obx(() => WallRow(
-            //     title: "Popular now",
-            //     children: WallsController.to.walls.value == null
-            //         ? []
-            //         : WallsController.to.walls.value.docs
-            //             .map((data) => WallCard(url: data.get("url"), id: data.get("id")))
-            //             .toList())),
             Obx(() {
               if (WallsController.to.categories.value != null &&
                   WallsController.to.walls.value != null) {
-                return Column(
-                  children: WallsController.to.categories.value.docs
-                      .map(
-                        (category) => WallRow(
-                          title: category.get("name"),
-                          children: WallsController.to.walls.value.docs
-                              .where(
-                                (wall) => wall
-                                    .get("category_ids")
-                                    .contains(category.id),
-                              )
-                              .map(
-                                (e) => WallCard(
-                                  url: e.get("url"),
-                                  category: category.get("name"),
-                                  id:  e.id,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      )
-                      .toList(),
+                return Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.only(bottom: 24),
+                    controller: sc,
+                    children: WallsController.to.categories.value.docs
+                        .map(
+                          (category) => WallRow(
+                        title: category.get("name"),
+                        children: WallsController.to.walls.value.docs
+                            .where(
+                              (wall) => wall
+                              .get("category_ids")
+                              .contains(category.id),
+                        )
+                            .map(
+                              (e) => WallCard(
+                            url: e.get("url"),
+                            category: category.get("name"),
+                            id:  e.id,
+                          ),
+                        )
+                            .toList(),
+                      ),
+                    )
+                        .toList(),
+                  ),
                 );
               } else {
                 return SizedBox();
