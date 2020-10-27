@@ -2,8 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:liqui_walls/controllers/walls.dart';
+import 'package:wallpaper_manager/wallpaper_manager.dart';
 
 class ApplyPage extends StatelessWidget {
   final String url;
@@ -70,8 +73,8 @@ class ApplyPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: ValueListenableBuilder(
-                            valueListenable:
-                                WallsController.to.wallsBox.listenable(keys: [id]),
+                            valueListenable: WallsController.to.wallsBox
+                                .listenable(keys: [id]),
                             builder: (context, box, widget) {
                               var isFavorite = box.get(id) != null;
                               var icon = isFavorite
@@ -108,8 +111,55 @@ class ApplyPage extends StatelessWidget {
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
                         ),
-                        onTap: () {
-                          print("applied");
+                        onTap: () async {
+                          var file =
+                              await DefaultCacheManager().getSingleFile(url);
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Apply wallpaper"),
+                              content: Text(
+                                  "Where would you like to apply the wallpaper?"),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () async {
+                                    await WallpaperManager.setWallpaperFromFile(
+                                      file.path,
+                                      WallpaperManager.HOME_SCREEN,
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Home screen"),
+                                ),
+                                FlatButton(
+                                  onPressed: () async {
+                                    await WallpaperManager.setWallpaperFromFile(
+                                      file.path,
+                                      WallpaperManager.LOCK_SCREEN,
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Lock screen"),
+                                ),
+                                FlatButton(
+                                  onPressed: () async {
+                                    await WallpaperManager.setWallpaperFromFile(
+                                      file.path,
+                                      WallpaperManager.BOTH_SCREENS,
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Both"),
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Cancel"),
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -128,8 +178,12 @@ class ApplyPage extends StatelessWidget {
                             color: Colors.black87,
                           ),
                         ),
-                        onTap: () {
-                          print("hearted");
+                        onTap: () async {
+                          var file =
+                              await DefaultCacheManager().getSingleFile(url);
+                          GallerySaver.saveImage(file.path,
+                              albumName: "LiquiWalls");
+                          file.deleteSync();
                         },
                       ),
                     ),

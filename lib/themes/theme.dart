@@ -91,7 +91,7 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Circular-Std'),
     iconTheme: IconThemeData(color: Colors.black.withOpacity(0.7)),
     dialogTheme: DialogTheme(
-      backgroundColor: deepBlue,
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),

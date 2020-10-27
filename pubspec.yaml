@@ -25,6 +25,7 @@ dependencies:
   wallpaper_manager: ^1.0.10
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
+  gallery_saver: ^2.0.1
 
 dev_dependencies:
   flutter_test:
