@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:liqui_walls/controllers/walls.dart';
 import 'package:liqui_walls/widgets/walls/wall_card.dart';
 import 'package:liqui_walls/widgets/walls/wall_row.dart';
@@ -14,95 +16,108 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _bottomIndex = 0;
 
+  Widget _getCurrentItem(context, height) {
+    switch (_bottomIndex) {
+      case 0:
+        return SlidingUpPanel(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          maxHeight: height,
+          minHeight: height - 300,
+          body: FittedBox(
+            fit: BoxFit.cover,
+            child: Image.asset("assets/images/flowing_skies.jpg"),
+          ),
+          panelBuilder: (sc) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  "Wallpapers",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
+                ),
+              ),
+              Obx(() {
+                if (WallsController.to.categories.value != null &&
+                    WallsController.to.walls.value != null) {
+                  return Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.only(bottom: 24),
+                      controller: sc,
+                      children: WallsController.to.categories.value.docs
+                          .map(
+                            (category) => WallRow(
+                              title: category.get("name"),
+                              children: WallsController.to.walls.value.docs
+                                  .where(
+                                    (wall) => wall
+                                        .get("category_ids")
+                                        .contains(category.id),
+                                  )
+                                  .map(
+                                    (e) => WallCard(
+                                      url: e.get("url"),
+                                      category: category.get("name"),
+                                      id: e.id,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                } else {
+                  return SizedBox();
+                }
+                return null;
+              }),
+              SizedBox(height: 32),
+              // WallRow(title: "Categories", children: items),
+            ],
+          ),
+        );
+      case 1:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24, top: 64),
+              child: Text(
+                "Favorites",
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: ValueListenableBuilder(
+                valueListenable: WallsController.to.wallsBox.listenable(),
+                builder: (BuildContext context, Box box, Widget widget) => GridView.count(
+                    crossAxisCount: 2,
+                    children: box
+                        .toMap()
+                        .entries
+                        .map(
+                          (entry) => WallCard(
+                            id: entry.key,
+                            url: entry.value,
+                          ),
+                        )
+                        .toList()),
+              ),
+            ),
+          ],
+        );
+      default:
+        return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Row(
-          children: [
-            Card(
-              color: Colors.white,
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(18),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Icon(Icons.menu, size: 30),
-                ),
-                onTap: () {
-                  // open drawer
-                  print("owo");
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-      body: SlidingUpPanel(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        maxHeight: height,
-        minHeight: height - 300,
-        body: FittedBox(
-          fit: BoxFit.cover,
-          child: Image.asset("assets/images/flowing_skies.jpg"),
-        ),
-        panelBuilder: (sc) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                "Wallpapers",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
-              ),
-            ),
-            Obx(() {
-              if (WallsController.to.categories.value != null &&
-                  WallsController.to.walls.value != null) {
-                return Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.only(bottom: 24),
-                    controller: sc,
-                    children: WallsController.to.categories.value.docs
-                        .map(
-                          (category) => WallRow(
-                        title: category.get("name"),
-                        children: WallsController.to.walls.value.docs
-                            .where(
-                              (wall) => wall
-                              .get("category_ids")
-                              .contains(category.id),
-                        )
-                            .map(
-                              (e) => WallCard(
-                            url: e.get("url"),
-                            category: category.get("name"),
-                            id:  e.id,
-                          ),
-                        )
-                            .toList(),
-                      ),
-                    )
-                        .toList(),
-                  ),
-                );
-              } else {
-                return SizedBox();
-              }
-              return null;
-            }),
-            SizedBox(height: 32),
-            // WallRow(title: "Categories", children: items),
-          ],
-        ),
-      ),
+      body: _getCurrentItem(context, height),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
         child: BottomNavigationBar(

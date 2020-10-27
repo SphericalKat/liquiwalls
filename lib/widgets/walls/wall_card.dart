@@ -8,7 +8,7 @@ class WallCard extends StatelessWidget {
   final String category;
   final String id;
 
-  const WallCard({Key key, this.url, this.category, this.id}) : super(key: key);
+  const WallCard({Key key, this.url, this.category = "", this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

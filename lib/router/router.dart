@@ -4,6 +4,6 @@ import 'package:liqui_walls/pages/home_page.dart';
 
 @MaterialAutoRouter(routes: [
   MaterialRoute(page: HomePage, initial: true),
-  MaterialRoute(page: ApplyPage, path: '/apply')
+  MaterialRoute(page: ApplyPage, path: '/apply'),
 ])
 class $CustomRouter {}

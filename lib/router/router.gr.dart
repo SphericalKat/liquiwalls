@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/apply_page.dart';
@@ -28,7 +29,6 @@ class CustomRouter extends RouterBase {
     RouteDef(Routes.homePage, page: HomePage),
     RouteDef(Routes.applyPage, page: ApplyPage),
   ];
-
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
@@ -44,7 +44,11 @@ class CustomRouter extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => ApplyPage(
-            key: args.key, url: args.url, category: args.category, id: args.id),
+          key: args.key,
+          url: args.url,
+          id: args.id,
+          category: args.category,
+        ),
         settings: data,
       );
     },
@@ -59,8 +63,7 @@ class CustomRouter extends RouterBase {
 class ApplyPageArguments {
   final Key key;
   final String url;
-  final String category;
   final String id;
-
-  ApplyPageArguments({this.key, this.url, this.category, this.id});
+  final String category;
+  ApplyPageArguments({this.key, this.url, this.id, this.category});
 }
