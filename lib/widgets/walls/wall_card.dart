@@ -6,8 +6,9 @@ import 'package:liqui_walls/router/router.gr.dart';
 class WallCard extends StatelessWidget {
   final String url;
   final String category;
+  final String id;
 
-  const WallCard({Key key, this.url, this.category}) : super(key: key);
+  const WallCard({Key key, this.url, this.category, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class WallCard extends StatelessWidget {
             onTap: () {
               ExtendedNavigator.of(context).push(
                 Routes.applyPage,
-                arguments: ApplyPageArguments(url: url, category: category),
+                arguments: ApplyPageArguments(url: url, category: category, id: id),
               );
             },
             child: Card(

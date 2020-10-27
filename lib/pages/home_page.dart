@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                                 (e) => WallCard(
                                   url: e.get("url"),
                                   category: category.get("name"),
+                                  id:  e.id,
                                 ),
                               )
                               .toList(),

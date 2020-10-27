@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:liqui_walls/controllers/walls.dart';
 
 class ApplyPage extends StatelessWidget {
   final String url;
@@ -42,7 +44,7 @@ class ApplyPage extends StatelessWidget {
         ),
       ),
       body: Hero(
-        tag: url+category,
+        tag: url + category,
         child: Stack(
           children: [
             Container(
@@ -67,14 +69,26 @@ class ApplyPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(18),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: Icon(
-                            CupertinoIcons.heart_fill,
-                            size: 30,
-                            color: Colors.pink,
+                          child: ValueListenableBuilder(
+                            valueListenable:
+                                WallsController.to.wallsBox.listenable(keys: [id]),
+                            builder: (context, box, widget) {
+                              var isFavorite = box.get(id) != null;
+                              var icon = isFavorite
+                                  ? CupertinoIcons.heart_fill
+                                  : CupertinoIcons.heart;
+                              var color =
+                                  isFavorite ? Colors.pink : Colors.black87;
+                              return Icon(
+                                icon,
+                                size: 30,
+                                color: color,
+                              );
+                            },
                           ),
                         ),
-                        onTap: () {
-                          print("hearted");
+                        onTap: () async {
+                          await WallsController.to.toggleFavorite(id, url);
                         },
                       ),
                     ),

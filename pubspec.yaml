@@ -23,11 +23,14 @@ dependencies:
   cached_network_image: ^2.3.3
   flutter_cache_manager: ^2.0.0
   wallpaper_manager: ^1.0.10
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   auto_route_generator: ^0.6.10
+  hive_generator: ^0.8.1
   build_runner:
 
 flutter:

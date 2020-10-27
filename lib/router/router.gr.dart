@@ -28,6 +28,7 @@ class CustomRouter extends RouterBase {
     RouteDef(Routes.homePage, page: HomePage),
     RouteDef(Routes.applyPage, page: ApplyPage),
   ];
+
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
@@ -43,10 +44,7 @@ class CustomRouter extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => ApplyPage(
-          key: args.key,
-          url: args.url,
-          category: args.category,
-        ),
+            key: args.key, url: args.url, category: args.category, id: args.id),
         settings: data,
       );
     },
@@ -62,5 +60,7 @@ class ApplyPageArguments {
   final Key key;
   final String url;
   final String category;
-  ApplyPageArguments({this.key, this.url, this.category});
+  final String id;
+
+  ApplyPageArguments({this.key, this.url, this.category, this.id});
 }
