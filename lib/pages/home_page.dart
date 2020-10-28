@@ -40,31 +40,34 @@ class _HomePageState extends State<HomePage> {
               Obx(() {
                 if (WallsController.to.categories.value != null &&
                     WallsController.to.walls.value != null) {
+                  var children = WallsController.to.categories.value.docs
+                      .map(
+                        (category) => WallRow(
+                          title: category.get("name"),
+                          children: WallsController.to.walls.value.docs
+                              .where(
+                                (wall) => wall
+                                    .get("category_ids")
+                                    .contains(category.id),
+                              )
+                              .map(
+                                (e) => WallCard(
+                                  url: e.get("url"),
+                                  category: category.get("name"),
+                                  id: e.id,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      )
+                      .toList();
                   return Expanded(
-                    child: ListView(
+                    child: ListView.builder(
                       padding: EdgeInsets.only(bottom: 24),
+                      itemCount: children.length,
                       controller: sc,
-                      children: WallsController.to.categories.value.docs
-                          .map(
-                            (category) => WallRow(
-                              title: category.get("name"),
-                              children: WallsController.to.walls.value.docs
-                                  .where(
-                                    (wall) => wall
-                                        .get("category_ids")
-                                        .contains(category.id),
-                                  )
-                                  .map(
-                                    (e) => WallCard(
-                                      url: e.get("url"),
-                                      category: category.get("name"),
-                                      id: e.id,
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          )
-                          .toList(),
+                      itemBuilder: (BuildContext context, int index) =>
+                          children[index],
                     ),
                   );
                 } else {
@@ -91,18 +94,19 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: ValueListenableBuilder(
                 valueListenable: WallsController.to.wallsBox.listenable(),
-                builder: (BuildContext context, Box box, Widget widget) => GridView.count(
-                    crossAxisCount: 2,
-                    children: box
-                        .toMap()
-                        .entries
-                        .map(
-                          (entry) => WallCard(
-                            id: entry.key,
-                            url: entry.value,
-                          ),
-                        )
-                        .toList()),
+                builder: (BuildContext context, Box box, Widget widget) =>
+                    GridView.count(
+                        crossAxisCount: 2,
+                        children: box
+                            .toMap()
+                            .entries
+                            .map(
+                              (entry) => WallCard(
+                                id: entry.key,
+                                url: entry.value,
+                              ),
+                            )
+                            .toList()),
               ),
             ),
           ],

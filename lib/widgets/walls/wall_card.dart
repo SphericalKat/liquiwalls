@@ -33,11 +33,14 @@ class WallCard extends StatelessWidget {
                   height: width * (18 / 9),
                   width: width,
                   child: CachedNetworkImage(
+                    progressIndicatorBuilder: (context, str, progress) {
+                      return Center(child: CircularProgressIndicator(value: progress.progress));
+                    },
                     imageUrl: url,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    // placeholder: (context, url) => Center(
+                    //   child: CircularProgressIndicator(),
+                    // ),
                   ),
                 ),
               ),

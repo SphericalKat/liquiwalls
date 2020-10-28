@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:liqui_walls/widgets/walls/wall_card.dart';
 
 class WallRow extends StatelessWidget {
   final String title;
-  final List<Widget> children;
+  final List<WallCard> children;
 
   const WallRow({Key key, @required this.title, @required this.children})
       : super(key: key);
