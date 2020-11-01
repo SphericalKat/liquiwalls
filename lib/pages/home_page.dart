@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:liqui_walls/controllers/walls.dart';
 import 'package:liqui_walls/widgets/walls/wall_card.dart';
 import 'package:liqui_walls/widgets/walls/wall_row.dart';
+import 'package:settings_ui/settings_ui.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
     switch (_bottomIndex) {
       case 0:
         return SlidingUpPanel(
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           maxHeight: height,
           minHeight: height - 300,
@@ -112,7 +114,25 @@ class _HomePageState extends State<HomePage> {
           ],
         );
       default:
-        return Container();
+        return ValueListenableBuilder(
+          valueListenable: Hive.box("favorites").listenable(keys: ['theme']),
+          builder: (context, box, widget) => SettingsList(
+            sections: [
+              SettingsSection(
+                title: 'Theme',
+                tiles: [
+                  SettingsTile.switchTile(
+                    title: 'Dark theme',
+                    onToggle: (value) {
+                      box.put('theme', value ? 'dark' : 'light');
+                    },
+                    switchValue: box.get('theme') != 'light',
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
     }
   }
 

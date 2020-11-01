@@ -124,7 +124,7 @@ class ApplyPage extends StatelessWidget {
                         },
                       ),
                     ),
-                    Platform.isAndroid ? Card(
+                    if (Platform.isAndroid) Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
@@ -191,7 +191,7 @@ class ApplyPage extends StatelessWidget {
                           );
                         },
                       ),
-                    ) : SizedBox(),
+                    ),
                     Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(

@@ -12,7 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-  await Hive.openBox("favorites");
+  var box = await Hive.openBox("favorites");
+  if (box.get('favorites') == null) {
+    box.put('theme', 'dark');
+  }
   runApp(WallsApp());
 }
 
@@ -32,9 +35,12 @@ class WallsApp extends StatelessWidget {
               title: 'LiquiWalls',
               builder: ExtendedNavigator.builder<CustomRouter>(
                 router: CustomRouter(),
-                builder: (context, extendedNav) => Theme(
-                  data: lightTheme,
-                  child: extendedNav,
+                builder: (context, extendedNav) => ValueListenableBuilder(
+                  valueListenable: Hive.box("favorites").listenable(keys: ['theme']),
+                  builder: (context, box, widget) => Theme(
+                    data: box.get('theme') == 'light' ? lightTheme : darkTheme,
+                    child: extendedNav,
+                  ),
                 ),
               ),
             );

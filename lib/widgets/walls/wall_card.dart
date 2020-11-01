@@ -18,6 +18,7 @@ class WallCard extends StatelessWidget {
       child: Hero(
         tag: url + category,
         child: Material(
+          color: Colors.transparent,
           child: InkWell(
             onTap: () {
               ExtendedNavigator.of(context).push(
