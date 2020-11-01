@@ -1,11 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:liqui_walls/controllers/walls.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
 
 class ApplyPage extends StatelessWidget {
@@ -95,7 +100,7 @@ class ApplyPage extends StatelessWidget {
                         },
                       ),
                     ),
-                    Card(
+                    Platform.isAndroid ? Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
@@ -113,7 +118,7 @@ class ApplyPage extends StatelessWidget {
                         ),
                         onTap: () async {
                           var file =
-                              await DefaultCacheManager().getSingleFile(url);
+                          await DefaultCacheManager().getSingleFile(url);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -162,7 +167,7 @@ class ApplyPage extends StatelessWidget {
                           );
                         },
                       ),
-                    ),
+                    ) : SizedBox(),
                     Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -179,11 +184,15 @@ class ApplyPage extends StatelessWidget {
                           ),
                         ),
                         onTap: () async {
-                          var file =
-                              await DefaultCacheManager().getSingleFile(url);
-                          GallerySaver.saveImage(file.path,
-                              albumName: "LiquiWalls");
-                          file.deleteSync();
+                          if (await Permission.photos.isGranted) {
+                            var response = await Dio().get(url,
+                                options:
+                                    Options(responseType: ResponseType.bytes));
+                            await ImageGallerySaver.saveImage(
+                                Uint8List.fromList(response.data));
+                          } else {
+                            await Permission.photos.request();
+                          }
                         },
                       ),
                     ),
