@@ -21,6 +21,30 @@ class ApplyPage extends StatelessWidget {
   const ApplyPage({Key key, this.url, this.id, this.category})
       : super(key: key);
 
+  void _onLoading(context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: new CircularProgressIndicator(),
+                ),
+                new Text("Downloading"),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,11 +209,13 @@ class ApplyPage extends StatelessWidget {
                         ),
                         onTap: () async {
                           if (await Permission.photos.isGranted) {
+                            _onLoading(context);
                             var response = await Dio().get(url,
                                 options:
                                     Options(responseType: ResponseType.bytes));
                             await ImageGallerySaver.saveImage(
                                 Uint8List.fromList(response.data));
+                            Navigator.of(context).pop();
                           } else {
                             await Permission.photos.request();
                           }
